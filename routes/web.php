@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// TODO: will be a post request once testing is complete.
 Route::get('repostats', 'RepoStatsController@store');
