@@ -12,4 +12,12 @@ class RepoStat extends Model
      * @var string
      */
     protected $table = 'repo_stats';
+    
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+    
 }

@@ -15,7 +15,7 @@ class RepoStatsController extends Controller
      */
     public function store(Request $request)
     {
-        //http://localhost:8787/repostats?stars=1&forks=1&releases=2&contributors=9&languages=2&open_issues=2&open_pull_requests=4&branches=3
+        ///repostats?stars=1&forks=1&releases=2&contributors=9&languages=2&open_issues=2&open_pull_requests=4&branches=3
         $attributes = $this->validate($request, [
             'stars' => 'required',
             'forks' => 'required',
@@ -26,7 +26,7 @@ class RepoStatsController extends Controller
             'open_pull_requests' => 'required',
             'branches' => 'required',
         ]);
-        dd($attributes);
+      
         RepoStat::create($attributes);
 
         return response()->json(['Stat recorded.']);
