@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('products', 'ProductController@store');
+Route::get('repostats', 'RepoStatsController@store');
