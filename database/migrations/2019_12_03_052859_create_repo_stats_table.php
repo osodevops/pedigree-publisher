@@ -16,6 +16,7 @@ class CreateRepoStatsTable extends Migration
         Schema::create('repo_stats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('stars');
+            $table->integer('commits');
             $table->integer('forks');
             $table->integer('releases');
             $table->integer('contributors');

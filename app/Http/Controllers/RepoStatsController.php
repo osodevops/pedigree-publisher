@@ -19,6 +19,7 @@ class RepoStatsController extends Controller
         $attributes = $this->validate($request, [
             'stars' => 'required',
             'forks' => 'required',
+            'commits' => 'required',
             'releases' => 'required',
             'contributors' => 'required',
             'languages' => 'required',
