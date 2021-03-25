@@ -15,7 +15,7 @@ class RepoStatsController extends Controller
      */
     public function store(Request $request)
     {
-        //repostats?stars=1&forks=1&releases=2&contributors=9&languages=2&open_issues=2&open_pull_requests=4&branches=3
+        //repostats?stars=1&forks=1&commits=12&releases=2&contributors=9&languages=2&open_issues=2&open_pull_requests=4&branches=3
         $attributes = $this->validate($request, [
             'stars' => 'required',
             'forks' => 'required',
