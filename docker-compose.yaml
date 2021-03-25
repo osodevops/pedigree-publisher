@@ -1,9 +1,12 @@
 version: "3.7"
 services:
   kafka_producer_php:
-    image: anamhossain/php-kafka:latest
+    build:
+      context: .
+      dockerfile:  ./docker/php/production/Dockerfile
     volumes:
       - ./:/var/www/
+    working_dir: /var/www/html/public
     environment:
       DB_CONNECTION: mysql
       DB_HOST: kafka_producer_mysql_db

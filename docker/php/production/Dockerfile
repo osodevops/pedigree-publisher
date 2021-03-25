@@ -1,9 +1,38 @@
-FROM anamhossain/php-kafka:latest
+FROM php:7.4-fpm
 LABEL maintainer="josh@osodevops.io"
 
 ARG BUILD_DATE
 
 LABEL org.label-schema.build-date=$BUILD_DATE
+
+ENV LIBRDKAFKA_VERSION v0.9.5
+ENV BUILD_DEPS \
+        build-essential \
+        git \
+        libsasl2-dev \
+        libssl-dev \
+        python-minimal \
+        zlib1g-dev \
+        supervisor
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ${BUILD_DEPS} \
+    && cd /tmp \
+    && git clone \
+        --branch ${LIBRDKAFKA_VERSION} \
+        --depth 1 \
+        https://github.com/edenhill/librdkafka.git \
+    && cd librdkafka \
+    && ./configure \
+    && make \
+    && make install \
+    && pecl install rdkafka \
+    && docker-php-ext-enable rdkafka \
+    && rm -rf /tmp/librdkafka \
+    && apt-get purge \
+        -y --auto-remove \
+        -o APT::AutoRemove::RecommendsImportant=false \
+        ${BUILD_DEPS}
 
 # PHP-FPM defaults
 ENV PHP_FPM_PM="ondemand"
@@ -14,10 +43,10 @@ ENV PHP_FPM_MAX_SPARE_SERVERS="10"
 ENV PHP_FPM_MAX_REQUESTS="500"
 
 # Install supervisor
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    supervisor \
-  && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+#   && apt-get install -y --no-install-recommends \
+#     supervisor \
+#   && rm -rf /var/lib/apt/lists/*
 
 COPY ./docker/app/php/production/configs/supervisord.conf /etc/supervisord.conf
 
