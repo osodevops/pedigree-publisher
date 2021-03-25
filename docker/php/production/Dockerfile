@@ -5,7 +5,7 @@ ARG BUILD_DATE
 
 LABEL org.label-schema.build-date=$BUILD_DATE
 
-ENV LIBRDKAFKA_VERSION v0.9.5
+ENV LIBRDKAFKA_VERSION v0.11.0
 ENV BUILD_DEPS \
         build-essential \
         git \
@@ -48,12 +48,12 @@ ENV PHP_FPM_MAX_REQUESTS="500"
 #     supervisor \
 #   && rm -rf /var/lib/apt/lists/*
 
-COPY ./docker/app/php/production/configs/supervisord.conf /etc/supervisord.conf
+COPY ./docker/php/production/configs/supervisord.conf /etc/supervisord.conf
 
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
 
 # Copy the Horizon configuration file
-COPY ./docker/app/php/production/configs/supervisord.conf /etc/supervisor/conf.d/
+COPY ./docker/php/production/configs/supervisord.conf /etc/supervisor/conf.d/
 
 RUN chmod a+w /etc/supervisor/conf.d
 
@@ -70,6 +70,6 @@ RUN rm -rf /var/www/html/public/storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage
 
 # Copy the PHP-FPM configuration file
-COPY ./docker/app/php/production/configs/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./docker/php/production/configs/www.conf /usr/local/etc/php-fpm.d/www.conf
 # Expose port 9000
 EXPOSE 9000
