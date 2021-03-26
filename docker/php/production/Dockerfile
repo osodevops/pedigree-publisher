@@ -12,8 +12,7 @@ ENV BUILD_DEPS \
         libsasl2-dev \
         libssl-dev \
         python-minimal \
-        zlib1g-dev \
-        supervisor
+        zlib1g-dev
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ${BUILD_DEPS} \
@@ -43,10 +42,10 @@ ENV PHP_FPM_MAX_SPARE_SERVERS="10"
 ENV PHP_FPM_MAX_REQUESTS="500"
 
 # Install supervisor
-# RUN apt-get update \
-#   && apt-get install -y --no-install-recommends \
-#     supervisor \
-#   && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    supervisor \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY ./docker/php/production/configs/supervisord.conf /etc/supervisord.conf
 
@@ -71,5 +70,12 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage
 
 # Copy the PHP-FPM configuration file
 COPY ./docker/php/production/configs/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Install Composer (latest version).
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && ln -s $(composer config --global home) /root/composer
+  
+ENV PATH=$PATH:/root/composer/vendor/bin COMPOSER_ALLOW_SUPERUSER=1
+
 # Expose port 9000
 EXPOSE 9000
