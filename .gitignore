@@ -1,5 +1,13 @@
+# Compiled files
+*.tfstate
+*.tfstate.backup
 
-.DS_Store
-vendor
-.env
-/storage
+# Module directory
+.terraform
+.idea
+*.iml
+
+.build-harness
+build-harness
+
+test.log
